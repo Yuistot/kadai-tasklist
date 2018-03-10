@@ -8,11 +8,9 @@
             <%= f.text_area :status, class: 'form-control', id: 'InputText', placeholder: '状況' %>
         </div>
         <%= f.submit 'Post', class: 'btn btn-primary btn-block' %>
+        <%= link_to 'タスク一覧', tasks_path, class: 'btn btn-info btn-block' %>
       <% end %>
     </aside>
-    <div class="col-xs-8">
-      <%= render 'tasks/tasks', tasks: @tasks %>
-    </div>
   </div>
 <% else %>
   <div class="center jumbotron">

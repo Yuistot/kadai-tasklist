@@ -1,7 +1,6 @@
 class TasksController < ApplicationController
-  before_action :set_task, only: [:show, :edit, :update, :destroy]
+  before_action :set_task, only: [:show, :edit, :update]
   before_action :require_user_logged_in
-  before_action :correct_user, only: [:destroy, :edit]
   
   def create
    @task = current_user.tasks.build(task_params)
@@ -10,13 +9,23 @@ class TasksController < ApplicationController
       redirect_to root_url
     else
       @tasks = current_user.tasks.order('created_at DESC').page(params[:page])
-      flash.now[:danger] = 'タスク保存に失敗しました。'
+      flash.now[:danger] = 'タスクの保存に失敗しました。'
       render 'toppages/index'
     end
   end
   
+  def show
+  end
+  
+  def new
+    @task = Task.new
+  end
+  
   def edit
-    set_task
+  end
+  
+  def index
+    @tasks = Task.all.page(params[:page])
   end
   
   def update
@@ -31,10 +40,11 @@ class TasksController < ApplicationController
   end
   
   def destroy
+    @task = current_user.tasks.find_by(id: params[:id])
     @task.destroy
     
     flash[:success] = 'タスクは正常に破棄されました'
-    redirect_back(fallback_location: root_path)
+    redirect_to tasks_url
   end
   
   private
